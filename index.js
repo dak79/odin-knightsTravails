@@ -23,8 +23,9 @@ export const GameBoard = (boardSize) => {
         return board
     }
 
-    const possibleMove = (
+    const possibleMoves = (
         board = generateBoard(size),
+
         chess = knight,
         s = size
     ) => {
@@ -44,18 +45,93 @@ export const GameBoard = (boardSize) => {
                 }
             })
         }
+
+        return board
     }
 
     const printBoard = (b = board) => b
     /**
      * TODO:
-     * Knight move with BFS - The shortest path.
-     * argument = adjacency list create from possibleMove, start and end
+     * Optimize, readability.
      *
      *
      * */
+    const findPath = (
+        source,
+        dest,
+        moves = possibleMoves(),
+        visited = {},
+        path = []
+    ) => {
+        for (let vertex of moves.keys()) {
+            visited[vertex] = { distance: null, predecessor: null }
+        }
+        // console.log(visited)
+        visited[source.toString()].distance = 0
+        // console.log(visited)
+        const queque = []
+        queque.push(source)
+
+        while (queque.length > 0) {
+            let u = queque.shift()
+            // console.log(u)
+            let n = moves.get(u.toString())
+            // console.log('n', n)
+
+            for (let i = 0; i < n.length; i++) {
+                let v = n[i]
+                // console.log(v)
+                if (visited[v.toString()].distance === null) {
+                    visited[v.toString()].distance =
+                        visited[u.toString()].distance + 1
+                    visited[v.toString()].predecessor = u
+                    queque.push(v)
+                    if (JSON.stringify(u) === JSON.stringify(dest)) {
+                        return visited
+                    }
+                }
+            }
+        }
+        return visited
+    }
+
+    const validInput = (input, s = size) => {
+        if (input) {
+            let [x, y] = input
+            return x >= 0 && y >= 0 && x < s && y < s ? true : false
+        }
+
+        return false
+    }
+
+    const knightMoves = (source, dest) => {
+        if (validInput(source) && validInput(dest)) {
+            const path = findPath(source, dest)
+            console.log(path)
+            let dist = path[dest.toString()].distance
+            let moves = []
+            let curr = path[dest.toString()].predecessor
+            while (curr) {
+                moves.unshift(curr.toString()).predecessor
+                curr = path[curr.toString()].predecessor
+            }
+            moves.push(dest.toString())
+
+            console.log(`You made it in ${dist} moves! Here your path:\n`)
+            for (let move in moves) {
+                console.log(`[${moves[move]}]\n`)
+            }
+            return 0
+        }
+
+        console.log('Error: source or destination not valid')
+        return 'Error'
+    }
+
     return {
         printBoard,
-        possibleMove
+        possibleMoves,
+        findPath,
+        knightMoves
     }
 }
