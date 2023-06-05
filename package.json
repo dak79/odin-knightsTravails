@@ -1,28 +1,29 @@
 {
-  "name": "knights-travail",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dak79/odin-knightsTravails.git"
-  },
-  "keywords": [
-    "graph",
-    "traversal"
-  ],
-  "author": "Daniele Campari",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dak79/odin-knightsTravails/issues"
-  },
-  "homepage": "https://github.com/dak79/odin-knightsTravails#readme",
-  "devDependencies": {
-    "eslint": "^8.41.0",
-    "eslint-config-prettier": "^8.8.0",
-    "prettier": "^2.8.8"
-  }
+    "name": "knights-travail",
+    "version": "0.0.1",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dak79/odin-knightsTravails.git"
+    },
+    "keywords": [
+        "graph",
+        "traversal"
+    ],
+    "author": "Daniele Campari",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dak79/odin-knightsTravails/issues"
+    },
+    "homepage": "https://github.com/dak79/odin-knightsTravails#readme",
+    "devDependencies": {
+        "eslint": "^8.41.0",
+        "eslint-config-prettier": "^8.8.0",
+        "prettier": "^2.8.8"
+    }
 }
