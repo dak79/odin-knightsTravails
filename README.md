@@ -8,9 +8,9 @@ world problem.
 
 ## Technologies
 
-JavaScript
-Npm
-Git
+-   JavaScript
+-   Npm
+-   Git
 
 ## Assignment
 
