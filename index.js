@@ -1,3 +1,5 @@
+import { Queque } from './queque.js'
+
 export const GameBoard = (boardSize) => {
     const size = boardSize
     const board = new Map()
@@ -49,43 +51,26 @@ export const GameBoard = (boardSize) => {
         return board
     }
 
-    const printBoard = (b = board) => b
-    /**
-     * TODO:
-     * Optimize, readability.
-     *
-     *
-     * */
-    const findPath = (
-        source,
-        dest,
-        moves = possibleMoves(),
-        visited = {},
-        path = []
-    ) => {
+    const findPath = (source, dest, moves = possibleMoves(), visited = {}) => {
         for (let vertex of moves.keys()) {
             visited[vertex] = { distance: null, predecessor: null }
         }
-        // console.log(visited)
         visited[source.toString()].distance = 0
-        // console.log(visited)
-        const queque = []
-        queque.push(source)
 
-        while (queque.length > 0) {
-            let u = queque.shift()
-            // console.log(u)
-            let n = moves.get(u.toString())
-            // console.log('n', n)
+        const queque = Queque()
+        queque.enqueque(source)
 
-            for (let i = 0; i < n.length; i++) {
-                let v = n[i]
-                // console.log(v)
+        while (!queque.isEmpty()) {
+            const u = queque.dequeque()
+            const neigh = moves.get(u.toString())
+
+            for (let i = 0; i < neigh.length; i++) {
+                let v = neigh[i]
                 if (visited[v.toString()].distance === null) {
                     visited[v.toString()].distance =
                         visited[u.toString()].distance + 1
                     visited[v.toString()].predecessor = u
-                    queque.push(v)
+                    queque.enqueque(v)
                     if (JSON.stringify(u) === JSON.stringify(dest)) {
                         return visited
                     }
@@ -107,19 +92,18 @@ export const GameBoard = (boardSize) => {
     const knightMoves = (source, dest) => {
         if (validInput(source) && validInput(dest)) {
             const path = findPath(source, dest)
-            console.log(path)
             let dist = path[dest.toString()].distance
             let moves = []
+            moves.push(dest.toString())
             let curr = path[dest.toString()].predecessor
             while (curr) {
-                moves.unshift(curr.toString()).predecessor
+                moves.push(curr.toString()).predecessor
                 curr = path[curr.toString()].predecessor
             }
-            moves.push(dest.toString())
-
+            const movesLength = moves.length
             console.log(`You made it in ${dist} moves! Here your path:\n`)
-            for (let move in moves) {
-                console.log(`[${moves[move]}]\n`)
+            for (let i = movesLength - 1; i >= 0; i--) {
+                console.log(`[${moves[i]}]\n`)
             }
             return 0
         }
@@ -129,9 +113,6 @@ export const GameBoard = (boardSize) => {
     }
 
     return {
-        printBoard,
-        possibleMoves,
-        findPath,
         knightMoves
     }
 }
