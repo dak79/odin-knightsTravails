@@ -1,5 +1,10 @@
 import { Queque } from './queque.js'
 
+/**
+ * GameBoard.
+ * Factory for creating the game
+ * @param {Number} boardSize - Size of board
+ */
 export const GameBoard = (boardSize) => {
     const size = boardSize
     const board = new Map()
@@ -16,6 +21,12 @@ export const GameBoard = (boardSize) => {
         [x + 1, y - 2]
     ]
 
+    /**
+     * generateBoard.
+     * Generate the vertices of board
+     * @param {Number} s - Size
+     * @returns {Map} S * S board / vertices
+     */
     const generateBoard = (s = size) => {
         for (let x = 0; x < s; x++) {
             for (let y = 0; y < s; y++) {
@@ -25,9 +36,16 @@ export const GameBoard = (boardSize) => {
         return board
     }
 
+    /**
+     * possibleMoves.
+     * Create the edges according to the movent rule of a chess
+     * @param {Map} board - Graph with only vertices
+     * @param {Number[][]} chess - Rule of movement
+     * @param {Number} s - Board size
+     * @returns {Map} edges in an adjacency list.
+     */
     const possibleMoves = (
         board = generateBoard(size),
-
         chess = knight,
         s = size
     ) => {
@@ -51,6 +69,16 @@ export const GameBoard = (boardSize) => {
         return board
     }
 
+    /**
+     * findPath.
+     * Find the shortest path between source and dest with BFS
+     * @param {Number[]} source - Starting square
+     * @param {Number[]} dest - Final square
+     * @param {Map} moves - Complete Graph with vertex and edges in an adjacency
+     * list.
+     * @param {Object[]} visited - visited squares
+     * @returns {Object[]} visited square with distance from source and path
+     */
     const findPath = (source, dest, moves = possibleMoves(), visited = {}) => {
         for (let vertex of moves.keys()) {
             visited[vertex] = { distance: null, predecessor: null }
@@ -80,6 +108,13 @@ export const GameBoard = (boardSize) => {
         return visited
     }
 
+    /**
+     * validInput.
+     * Check if the input exist and it is on the chessboard
+     * @param {Number[]} input
+     * @param {Number} s
+     * @returns {Boolean}
+     */
     const validInput = (input, s = size) => {
         if (input) {
             let [x, y] = input
@@ -89,6 +124,13 @@ export const GameBoard = (boardSize) => {
         return false
     }
 
+    /**
+     * knightMoves.
+     * Compute and print the shortest path.
+     *
+     * @param {Number[]} source - Coordinate of starting square
+     * @param {Number[]} dest - Coordinate of the end square
+     */
     const knightMoves = (source, dest) => {
         if (validInput(source) && validInput(dest)) {
             const path = findPath(source, dest)
